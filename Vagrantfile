@@ -1,30 +1,32 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+#commen config
+BOX = "centos/8"
+MASTER_NAME = "aoutifras"
+WORKER_NAME = "aoutifaw"
+MASTER_IP = "192.168.42.10"
+WORKER_IP = "192.168.42.11"
+MEM = 512
+CPU = 1
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+# Vagrant setup
+
 Vagrant.configure("2") do |config|
-  config.vm.box = "generic/alpine38"
-  config.vm.network "private_network", ip: "192.168.42.10"
-
-  config.vm.synced_folder ".", "/vagrant", disabled: true
-
-  config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    vb.gui = true  
-    # Customize the amount of memory on the VM:
-    vb.memory = "512"
+  config.vm.box = BOX
+  config.vm.box_check_update = false
+  config.vbguest.installer_options = { allow_kernel_upgrade: true }
+  config.vm.provider "virtualbox" do |v|
+    v.memory = MEM
+    v.cpus = CPU
   end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    apk update
-  SHELL
+  config.vm.define MASTER_NAME do |master|
+    master.vm.hostname = MASTER_NAME
+    master.vm.network "private_network" , ip: MASTER_IP
+    master.vm.provision "shell", privileged: true, path: "scripts/master_setup.sh", args: [MASTER_IP]
+    master.vm.synced_folder ".", "/vagran", type: "virtualbox"
+  end
+  config.vm.define WORKER_NAME do |worker|
+    worker.vm.hostname = WORKER_NAME
+    worker.vm.network "private_network" , ip: WORKER_IP
+    worker.vm.provision "shell", privileged: true, path: "scripts/worker_setup.sh", args: [WORKER_IP]
+    worker.vm.synced_folder ".", "/vagran", type: "virtualbox"
+  end
 end
