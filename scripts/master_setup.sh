@@ -1,1 +1,1 @@
-apk update
+echo 'ss'
