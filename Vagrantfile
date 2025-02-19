@@ -28,10 +28,10 @@ Vagrant.configure("2") do |config|
     master.vm.provision "shell", privileged: true, path: "scripts/master_setup.sh", args: [MASTER_IP]
     master.vm.synced_folder ".", "/vag",type:"virtualbox"
   end
-  # config.vm.define WORKER_NAME do |worker|
-  #   worker.vm.hostname = WORKER_NAME
-  #   worker.vm.network "private_network" , ip: WORKER_IP
-  #   worker.vm.provision "shell", privileged: true, path: "scripts/worker_setup.sh", args: [MASTER_IP]
-  #   worker.vm.synced_folder ".", "/vag",type:"virtualbox"
-  # end
+  config.vm.define WORKER_NAME do |worker|
+    worker.vm.hostname = WORKER_NAME
+    worker.vm.network "private_network" , ip: WORKER_IP
+    worker.vm.provision "shell", privileged: true, path: "scripts/worker_setup.sh", args: [MASTER_IP]
+    worker.vm.synced_folder ".", "/vag",type:"virtualbox"
+  end
 end
