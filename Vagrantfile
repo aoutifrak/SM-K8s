@@ -1,11 +1,11 @@
 #commen config
-BOX = "ubuntu/trusty64"
-BOX_URL = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+BOX = "ubuntu/xenial64"
+BOX_URL = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
 MASTER_NAME = "aoutifras"
 WORKER_NAME = "aoutifraw"
 MASTER_IP = "192.168.56.10"
 WORKER_IP = "192.168.56.11"
-MEM = 512
+MEM = 1024
 CPU = 1
 
 # Vagrant setup
@@ -28,10 +28,10 @@ Vagrant.configure("2") do |config|
     master.vm.provision "shell", privileged: true, path: "scripts/master_setup.sh", args: [MASTER_IP]
     master.vm.synced_folder ".", "/vag",type:"virtualbox"
   end
-  config.vm.define WORKER_NAME do |worker|
-    worker.vm.hostname = WORKER_NAME
-    worker.vm.network "private_network" , ip: WORKER_IP
-    worker.vm.provision "shell", privileged: true, path: "scripts/worker_setup.sh", args: [WORKER_IP]
-    worker.vm.synced_folder ".", "/vag",type:"virtualbox"
-  end
+  # config.vm.define WORKER_NAME do |worker|
+  #   worker.vm.hostname = WORKER_NAME
+  #   worker.vm.network "private_network" , ip: WORKER_IP
+  #   worker.vm.provision "shell", privileged: true, path: "scripts/worker_setup.sh", args: [MASTER_IP]
+  #   worker.vm.synced_folder ".", "/vag",type:"virtualbox"
+  # end
 end
