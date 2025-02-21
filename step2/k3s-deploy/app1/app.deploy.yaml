@@ -1,0 +1,21 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    app: app1
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      volumes:
+        -name : vol
+      containers:
+        - image: nginx-unprivileged:1.20.0-alpine
+        name: app1
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: vol
+          mountPath: /usr/share/nginx/html
