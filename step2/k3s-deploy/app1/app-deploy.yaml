@@ -19,7 +19,7 @@ spec:
         - name: vol
       containers:
         - name: app1
-          image: nginx-unprivileged:1.20.0-alpine
+          image: nginx
           ports:
             - containerPort: 80
           volumeMounts:
