@@ -10,3 +10,4 @@ curl -sfL https://get.k3s.io | sh
 sudo cp /var/lib/rancher/k3s/server/token /vag/token
 ln -s /usr/local/bin/k3s /bin/k
 
+k kubectl apply -f app1/app-deploy.yaml
