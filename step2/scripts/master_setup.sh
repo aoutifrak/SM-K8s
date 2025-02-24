@@ -10,7 +10,3 @@ curl -sfL https://get.k3s.io | sh
 ln -s /usr/local/bin/k3s /bin/k
 
 k kubectl apply -f /vag/k3s-deploy/app1/
-
-sleep 6
-
-cp /vag/k3s-deploy/app1/index/html /usr/share/nginx/html
