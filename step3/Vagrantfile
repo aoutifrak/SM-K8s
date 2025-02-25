@@ -1,0 +1,30 @@
+#commen config
+BOX = "ubuntu/xenial64"
+BOX_URL = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
+MASTER_NAME = "aoutifras"
+MASTER_IP = "192.168.56.10"
+MEM = 2048
+CPU = 2
+
+# Vagrant setup
+
+Vagrant.configure("2") do |config|
+  config.vm.box = BOX
+  config.vm.box_url = BOX_URL
+  config.vm.box_check_update = false
+  config.vm.provider "virtualbox" do |v|
+    v.memory = MEM
+    v.cpus = CPU
+    # make the vm access network https://stackoverflow.com/questions/18457306/how-to-enable-internet-access-inside-vagrant
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+
+  end
+
+  config.vm.define MASTER_NAME do |master|
+    master.vm.hostname = MASTER_NAME
+    master.vm.network "private_network" , ip: MASTER_IP
+    master.vm.provision "shell", privileged: true, path: "scripts/master_setup.sh", args: [MASTER_IP]
+    master.vm.synced_folder ".", "/vag",type:"virtualbox"
+  end
+end
