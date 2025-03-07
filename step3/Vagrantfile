@@ -3,7 +3,7 @@ BOX = "ubuntu/xenial64"
 BOX_URL = "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-vagrant.box"
 MASTER_NAME = "aoutifras"
 MASTER_IP = "192.168.56.10"
-MEM = 2048
+MEM = 1524
 CPU = 2
 
 # Vagrant setup
